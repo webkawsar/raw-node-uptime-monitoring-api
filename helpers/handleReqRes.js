@@ -36,16 +36,6 @@ handler.handleReqRes = (req, res) => {
     const choosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
     // console.log(typeof choosenHandler, 'choosenHandler');
 
-    choosenHandler(requestProperties, (code, obj) => {
-        const statusCode = typeof code === 'number' ? code : 500;
-        const payLoad = typeof obj === 'object' ? obj : {};
-        const payLoadString = JSON.stringify(payLoad);
-
-        // return final response
-        res.writeHead(statusCode);
-        res.end(payLoadString);
-    });
-
     const decoder = new StringDecoder('utf8');
     let realData = '';
 
@@ -56,7 +46,17 @@ handler.handleReqRes = (req, res) => {
     req.on('end', () => {
         realData += decoder.end();
         console.log(realData);
-        res.end('Hello Nodejs Developer!');
+
+        choosenHandler(requestProperties, (code, obj) => {
+            const statusCode = typeof code === 'number' ? code : 500;
+            const payLoad = typeof obj === 'object' ? obj : {};
+            const payLoadString = JSON.stringify(payLoad);
+
+            // return final response
+            res.writeHead(statusCode);
+            res.end(payLoadString);
+        });
+        // res.end('Hello Nodejs Developer!');
     });
 };
 
