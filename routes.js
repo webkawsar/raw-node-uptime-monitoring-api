@@ -8,10 +8,12 @@
 
 // Dependencies
 const { sampleHandler } = require('./handlers/routeHandlers/sampleHandler');
+const { userHandler } = require('./handlers/routeHandlers/userHandler');
 
 // Module Scaffolding
 const routes = {
     sample: sampleHandler,
+    user: userHandler,
 };
 
 module.exports = routes;

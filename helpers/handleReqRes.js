@@ -11,6 +11,7 @@ const url = require('url');
 const { StringDecoder } = require('string_decoder');
 const routes = require('../routes');
 const { notFoundHandler } = require('../handlers/routeHandlers/notFoundHandler');
+const { parseJSON } = require('./utilities');
 
 // module scaffolding
 const handler = {};
@@ -34,8 +35,6 @@ handler.handleReqRes = (req, res) => {
     };
 
     const choosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
-    // console.log(typeof choosenHandler, 'choosenHandler');
-
     const decoder = new StringDecoder('utf8');
     let realData = '';
 
@@ -45,7 +44,7 @@ handler.handleReqRes = (req, res) => {
 
     req.on('end', () => {
         realData += decoder.end();
-        console.log(realData);
+        requestProperties.body = parseJSON(realData);
 
         choosenHandler(requestProperties, (code, obj) => {
             const statusCode = typeof code === 'number' ? code : 500;
@@ -53,10 +52,10 @@ handler.handleReqRes = (req, res) => {
             const payLoadString = JSON.stringify(payLoad);
 
             // return final response
+            res.setHeader('Content-Type', 'Application/json');
             res.writeHead(statusCode);
             res.end(payLoadString);
         });
-        // res.end('Hello Nodejs Developer!');
     });
 };
 
