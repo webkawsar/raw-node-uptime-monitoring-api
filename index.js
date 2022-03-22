@@ -8,31 +8,19 @@
 
 // dependencies
 const http = require('http');
+const { sendTwilioSms } = require('./helpers/notifications');
 
 const { handleReqRes } = require('./helpers/handleReqRes');
 const environment = require('./helpers/environments');
-const data = require('./lib/data');
+// const data = require('./lib/data');
 
 // App Object - Module Scaffolding
 const app = {};
 
 // testing file system
-// data.create('test', 'newFile', { data: 'JSON Data' }, (error) => {
-//     console.log('Error was: ', error);
-// });
-
-// data.read('test', 'newFile', (error, result) => {
-//     console.log(error);
-//     console.log(result);
-// });
-
-// data.update('test', 'newFile', { data: 'JSON Data updated' }, (error) => {
-//     console.log('Error was: ', error);
-// });
-
-// data.delete('test', 'newFile', (error) => {
-//     console.log(error);
-// });
+sendTwilioSms('01733920943', 'Hello bhai', (error) => {
+    console.log(`sendTwilioSms error was: ${error}`);
+});
 
 // Create Server
 app.createServer = () => {
