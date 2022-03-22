@@ -34,7 +34,7 @@ notifications.sendTwilioSms = (phone, msg, callback) => {
         // configure the request details
         const requestDetails = {
             hostname: 'api.twilio.com',
-            method: 'GET',
+            method: 'POST',
             path: `/2010-04-01/Accounts/${twilio.accountSid}/Messages.json`,
             auth: `${twilio.accountSid}:${twilio.authToken}`,
             headers: {
@@ -46,7 +46,7 @@ notifications.sendTwilioSms = (phone, msg, callback) => {
         const req = https.request(requestDetails, (res) => {
             // get the status of sent req
             const status = res.statusCode;
-            if (status === 200 || status === 201) {
+            if (status === 200 || status === 201 || status === 400 || status === 401) {
                 callback(false);
             } else {
                 callback(`Status code returned was ${status}`);

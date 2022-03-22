@@ -1,37 +1,26 @@
 /*
  * Title: Uptime Monitoring API
- * Description: A restful Api
+ * Description: Initial file to start the server and worker
  * Author: Kawsar Ahmed
- * Date: 16/03/2022
+ * Date: 22/03/2022
  *
  */
 
 // dependencies
-const http = require('http');
-const { sendTwilioSms } = require('./helpers/notifications');
-
-const { handleReqRes } = require('./helpers/handleReqRes');
-const environment = require('./helpers/environments');
-// const data = require('./lib/data');
+const server = require('./lib/server');
+const worker = require('./lib/worker');
 
 // App Object - Module Scaffolding
 const app = {};
 
-// testing file system
-sendTwilioSms('01733920943', 'Hello bhai', (error) => {
-    console.log(`sendTwilioSms error was: ${error}`);
-});
+// server init
+app.init = () => {
+    // start the server
+    server.init();
 
-// Create Server
-app.createServer = () => {
-    const server = http.createServer(app.handleReqRes);
-    server.listen(environment.port, () => {
-        console.log(`Server is listening on port: ${environment.port}`);
-    });
+    // start the worker
+    worker.init();
 };
 
-// Handle Request Response
-app.handleReqRes = handleReqRes;
-
-// Start the Server
-app.createServer();
+// Invoke function
+app.init();
